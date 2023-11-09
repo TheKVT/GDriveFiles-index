@@ -16,8 +16,6 @@ numDirs = 0
 grandTotalSize=0
 linkFiles="false" # file linking not yet implemented
 
-
-
 # functions definition
 def generateDirArray(dirToScan):
     global dirData
@@ -27,8 +25,8 @@ def generateDirArray(dirToScan):
 
     # Template Input
     global folder_to_index
-    folder_to_index = raw_input("Paste the path of Folder you want to Index :    ")
-    print "Processing...."
+    folder_to_index = input("Copy and paste the path of Folder you want to Index :    ")
+    print("Processing....")
 
     # assing a number identifier to each directory
     i = 1
@@ -108,21 +106,22 @@ def generateDirArray(dirToScan):
     #   "SUBDIRECTORY_ID*SUBDIRECTORY_ID*SUBDIRECTORY_ID*...",
     #   ];
     print('Scanning Folder Tree Completed !!')
+    list_data = []
     for d in range(len(allDirArray)):
         # print('allDirArray')
-        dirData = dirData + "dirs[" + str(d) + "] = [\n"
+        list_data.append("dirs[" + str(d) + "] = [\n")
         for g in range(len(allDirArray[d])):
             # print('g')
             # print('d', d)
             # print('g', g)
             # print('allDirArray', len(allDirArray))
             if type(allDirArray[d][g]) == int:
-                dirData=dirData+str(allDirArray[d][g])+",\n"
+                list_data.append(str(allDirArray[d][g])+",\n")
             else:
-                dirData=dirData+'"'+allDirArray[d][g]+'",\n'
-        dirData=dirData+"];\n"
-        dirData=dirData+"\n"
-
+                list_data.append('"'+allDirArray[d][g]+'",\n')
+        list_data.append("];\n")
+        list_data.append("\n")
+    dirData += ''.join(list_data)
     return 
 
 
@@ -150,11 +149,10 @@ def generateHTML(dirData,appName,appVer,genDate,genTime,title,appLink,numFiles,n
 
 
 
-
 # main program start point
 if len(sys.argv) < 3:   # check if required arguments are supplied
     print("Missing arguments. This tool should be used as follows:")
-    print ("gdrive-index.py pathToIndex outputFileName")
+    print ("GDriveFiles-index.py pathToIndex outputFileName")
 else:
     pathToIndex = str(sys.argv[1])
     title = str(sys.argv[2])
@@ -163,6 +161,3 @@ else:
         generateHTML(dirData,appName,appVer,genDate,genTime,title,appLink,numFiles,numDirs,grandTotalSize,linkFiles)
     else:
         print("The specified directory doesn't exist")
-
-    
-        
